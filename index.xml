@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>M. Luthfi As Syafii</title>
+    <link>/</link>
+    <description>Recent content on M. Luthfi As Syafii</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 28 Nov 2018 15:14:39 +1000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Install Kubernetes cluster in ubuntu</title>
+      <link>/docs/install-kubernetes-calico/</link>
+      <pubDate>Mon, 11 Feb 2019 19:27:37 +1000</pubDate>
+      
+      <guid>/docs/install-kubernetes-calico/</guid>
+      <description>Install kubernetes Cluster  Specification : Calico, Containerd
+ Install packages load overlay and br_netfilter kernal modules.
+cat &amp;lt;&amp;lt;EOF | sudo tee /etc/modules-load.d/containerd.conf overlay br_netfilter EOF sudo modprobe overlay sudo modprobe br_netfilter Set these system configurations for Kubernetes networking cat &amp;lt;&amp;lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf net.bridge.bridge-nf-call-iptables = 1 net.ipv4.ip_forward = 1 net.bridge.bridge-nf-call-ip6tables = 1 EOF Apply settings sudo sysctl --system Install containerd sudo apt-get update &amp;amp;&amp;amp; sudo apt-get install -y containerd sudo mkdir -p /etc/containerd sudo containerd config default | sudo tee /etc/containerd/config.</description>
+    </item>
+    
+    <item>
+      <title>Install Open5Gs</title>
+      <link>/docs/install-open5gs/</link>
+      <pubDate>Mon, 11 Feb 2019 19:27:37 +1000</pubDate>
+      
+      <guid>/docs/install-open5gs/</guid>
+      <description>Markdown Test Page  Headings Paragraphs Blockquotes Lists Horizontal rule Table Code Inline elements   Headings Heading one Sint sit cillum pariatur eiusmod nulla pariatur ipsum. Sit laborum anim qui mollit tempor pariatur nisi minim dolor. Aliquip et adipisicing sit sit fugiat commodo id sunt. Nostrud enim ad commodo incididunt cupidatat in ullamco ullamco Lorem cupidatat velit enim et Lorem.
+Heading two Aute officia nulla deserunt do deserunt cillum velit magna.</description>
+    </item>
+    
+    <item>
+      <title>Specimen</title>
+      <link>/docs/specimen/</link>
+      <pubDate>Mon, 11 Feb 2019 19:27:37 +1000</pubDate>
+      
+      <guid>/docs/specimen/</guid>
+      <description>Markdown Test Page  Headings Paragraphs Blockquotes Lists Horizontal rule Table Code Inline elements   Headings Heading one Sint sit cillum pariatur eiusmod nulla pariatur ipsum. Sit laborum anim qui mollit tempor pariatur nisi minim dolor. Aliquip et adipisicing sit sit fugiat commodo id sunt. Nostrud enim ad commodo incididunt cupidatat in ullamco ullamco Lorem cupidatat velit enim et Lorem.
+Heading two Aute officia nulla deserunt do deserunt cillum velit magna.</description>
+    </item>
+    
+  </channel>
+</rss>

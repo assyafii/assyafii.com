@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Install Kubernetes cluster in ubuntu - M. Luthfi As Syafii</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <link rel="icon" href="/favicon.png">
+
+  
+  
+  <link rel="stylesheet" href="/css/style.min.6719d72e323121369d5caeb4264b95d8a63cf1deaab029da67602fe5a046e0a4.css">
+  
+
+  
+
+</head>
+
+<body class='page page-default-single'>
+  <div id="main-menu-mobile" class="main-menu-mobile">
+  <ul>
+    
+    
+    <li class="menu-item-home">
+      <a href="/">
+        <span>Home</span>
+      </a>
+    </li>
+    
+    <li class="menu-item-docs">
+      <a href="/docs/">
+        <span>Docs</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+  <div class="wrapper">
+    <div class='header'>
+  <div class="container">
+    <div class="logo">
+      
+    </div>
+    <div class="logo-mobile">
+      
+    </div>
+    <div id="main-menu" class="main-menu">
+  <ul>
+    
+    
+    <li class="menu-item-home">
+      <a href="/">
+        <span>Home</span>
+      </a>
+    </li>
+    
+    <li class="menu-item-docs">
+      <a href="/docs/">
+        <span>Docs</span>
+      </a>
+    </li>
+    
+  </ul>
+</div>
+    <button id="toggle-main-menu-mobile" class="hamburger hamburger--slider" type="button">
+  <span class="hamburger-box">
+    <span class="hamburger-inner"></span>
+  </span>
+</button>
+  </div>
+</div>
+
+
+    
+    
+    
+    
+    
+    
+
+    
+    <div class="container pt-2 pt-md-6 pb-3 pb-md-6">
+      <div class="row">
+        <div class="col-12 col-md-3 mb-3">
+          <div class="sidebar">
+            
+<div class="docs-menu">
+  <h4>Docs</h4>
+  <ul>
+    
+    <li class="active ">
+      <a href="/docs/install-kubernetes-calico/">Install Kubernetes cluster in ubuntu</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/install-open5gs/">Install Open5Gs</a>
+    </li>
+    
+    <li class="">
+      <a href="/docs/specimen/">Specimen</a>
+    </li>
+    
+  </ul>
+</div>
+
+          </div>
+        </div>
+        <div class="col-12 col-md-9">
+          
+<h1 class="title">Install Kubernetes cluster in ubuntu</h1>
+<div class="content ">
+  <hr>
+<h1 id="install-kubernetes-cluster">Install kubernetes Cluster</h1>
+<blockquote>
+<p>Specification : Calico, Containerd</p>
+</blockquote>
+<h3 id="install-packages">Install packages</h3>
+<p>load overlay and br_netfilter kernal modules.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/containerd.conf 
+overlay 
+br_netfilter 
+EOF
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo modprobe overlay 
+sudo modprobe br_netfilter
+</code></pre></div><h3 id="set-these-system-configurations-for-kubernetes-networking">Set these system configurations for Kubernetes networking</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &lt;&lt;EOF | sudo tee /etc/sysctl.d/99-kubernetes-cri.conf 
+net.bridge.bridge-nf-call-iptables = 1 
+net.ipv4.ip_forward = 1 
+net.bridge.bridge-nf-call-ip6tables = 1 
+EOF
+</code></pre></div><h3 id="apply-settings">Apply settings</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo sysctl --system
+</code></pre></div><h3 id="install-containerd">Install containerd</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-get update &amp;&amp; sudo apt-get install -y containerd
+sudo mkdir -p /etc/containerd
+sudo containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+sudo systemctl enable containerd
+</code></pre></div><h3 id="disable-swap">Disable SWAP</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo swapoff -a
+sudo sed -i &#39;/ swap / s/^\(.*\)$/#\1/g&#39; /etc/fstab
+</code></pre></div><h3 id="install-depedency-packages">Install depedency packages</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt update &amp;&amp; sudo apt-get install -y apt-transport-https curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+</code></pre></div><h3 id="add-kubernetes-repo">add kubernetes repo</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &lt;&lt;EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+sudo apt update
+</code></pre></div><h3 id="install-package">Install package</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt-get install -y kubelet=1.21.1-00 kubeadm=1.21.1-00 kubectl=1.21.1-00
+sudo apt-mark hold kubelet kubeadm kubectl
+</code></pre></div><h3 id="initialize-the-cluster">Initialize the Cluster</h3>
+<h4 id="1-master">1. Master</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo kubeadm init --pod-network-cidr 192.168.0.0/16
+mkdir -p $HOME/.kube
+sudo cp -l /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+</code></pre></div><h3 id="install-calico-networking">Install calico networking</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+kubectl get pods -n kube-system
+</code></pre></div><h4 id="2-node">2. Node</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo kubeadm join &lt;join command from previous command&gt;
+</code></pre></div><h4 id="master">Master</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl get nodes
+</code></pre></div><hr>
+<h2 id="testing-deployment">Testing deployment</h2>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano nginx-deployment.yml
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2 # tells deployment to run 2 pods matching the template
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.7.9
+          ports:
+            - containerPort: 80
+</code></pre></div><h3 id="running--deploy-pod">Running &amp; deploy pod</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo kubectl apply -f  nginx-deployment.yml    
+</code></pre></div><h3 id="verification">Verification</h3>
+<p><img src="./nginx-deployment.png" alt="nginx-deployment"></p>
+
+</div>
+</div>
+
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div class="sub-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <div class="sub-footer-inner">
+          <ul>
+            <li class="zerostatic"><a href="https://gohugo.io">Made with love @hugo</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/scripts.min.eaf147370baecdd07c022597db631f99cab1c9cd6479de586f30327a568d6a0f.js"></script>
+  
+
+  
+  
+  
+    
+  
+
+
+</body>
+
+</html>
