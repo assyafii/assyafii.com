@@ -136,8 +136,8 @@ kubectl apply -f grafana.yaml #for dashboard monitoring (visualization)
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
 kubectl create namespace cattle-system
 </code></pre></div><p><strong>Install crds cert manager</strong></p>
-<p><code>kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.1/cert-manager.crds.yaml</code></p>
-<p><strong>Add the Jetstack Helm repository</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.1/cert-manager.crds.yaml
+</code></pre></div><p><strong>Add the Jetstack Helm repository</strong></p>
 <p><code>helm repo add jetstack https://charts.jetstack.io</code></p>
 <p><strong>Update your local Helm chart repository cache</strong></p>
 <p><code>helm repo update</code></p>
