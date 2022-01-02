@@ -13,10 +13,10 @@
       <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/docs/5g-cloud-native-simulation-with-open5gs/</guid>
-      <description>Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH
+      <description>Specification : Kubernetes, HELM, Istio, Open5Gs, ROOK, CEPH, Rancher
  Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
 kubectl label namespace open5gs istio-injection=enabled Install Addons packages
-cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus.</description>
+cd ~/istio-1.</description>
     </item>
     
     <item>
