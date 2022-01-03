@@ -182,7 +182,7 @@ sudo nano templates/amf-deploy.yaml
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">nano templates/amf-configmap.yaml
 </code></pre></div><p><img src="./amf-configmap.png" alt="amf-configmap"></p>
 <h4 id="change-mongodb-configuration">Change mongodb configuration</h4>
-<p>We will use <strong>ROOK Ceph</strong> for persistent volume, need <strong>uncomment existing persistent volume &amp; add storageclassname in persistent volume claim</strong>.</p>
+<p>We will use <strong>ROOK Ceph</strong> for persistent volume, need <strong>comment existing persistent volume &amp; add StorageClassName in persistent volume claim</strong>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">nano templates/mongodb.yaml
 </code></pre></div><p><img src="./mongodb.png" alt="mongodb"></p>
 <h4 id="deploy-open5gs-with-helm-chart">Deploy open5gs with helm-chart</h4>
