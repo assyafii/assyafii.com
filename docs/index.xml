@@ -8,6 +8,17 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 28 Nov 2018 15:14:39 +1000</lastBuildDate><atom:link href="/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Deploy PortWorx storage in kubernetes</title>
+      <link>/docs/deploy-portworx-storage-in-kubernetes/</link>
+      <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/deploy-portworx-storage-in-kubernetes/</guid>
+      <description>Specification : Kubernetes, PortWorx, Storage
+ PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp;amp; Bandwidth.
+ Lab Topology    IP Address Nodes     10.</description>
+    </item>
+    
+    <item>
       <title>5G Cloud Native Simulation with Open5Gs</title>
       <link>/docs/5g-cloud-native-simulation-with-open5gs/</link>
       <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
@@ -17,17 +28,6 @@
  Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
 kubectl label namespace open5gs istio-injection=enabled Install Addons packages
 cd ~/istio-1.</description>
-    </item>
-    
-    <item>
-      <title>Deploy PortWorx storage in kubernetes</title>
-      <link>/docs/deploy-portworx-storage-in-kubernetes/</link>
-      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/docs/deploy-portworx-storage-in-kubernetes/</guid>
-      <description>Specification : Kubernetes, PortWorx, Storage
- PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp;amp; Bandwidth.
- Lab Topology    IP Address Nodes     10.</description>
     </item>
     
     <item>
