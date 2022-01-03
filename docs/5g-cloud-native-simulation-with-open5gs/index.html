@@ -142,26 +142,26 @@ kubectl create namespace cattle-system
 </code></pre></div><p><strong>Install crds Cert Manager</strong></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.1/cert-manager.crds.yaml
 </code></pre></div><p><strong>Add the Jetstack Helm repository</strong></p>
-<p><code>helm repo add jetstack https://charts.jetstack.io</code></p>
-<p><strong>Update your local Helm chart repository cache</strong></p>
-<p><code>helm repo update</code></p>
-<p><strong>Install the cert-manager Helm chart</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm repo add jetstack https://charts.jetstack.io
+</code></pre></div><p><strong>Update your local Helm chart repository cache</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm repo update
+</code></pre></div><p><strong>Install the cert-manager Helm chart</strong></p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm install cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --create-namespace \
   --version v1.5.1
 </code></pre></div><hr>
-<p><code>kubectl get pods --namespace cert-manager</code></p>
-<h4 id="install-rancher-with-helm">Install Rancher with Helm</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl get pods --namespace cert-manager
+</code></pre></div><h4 id="install-rancher-with-helm">Install Rancher with Helm</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm install rancher rancher-latest/rancher \
   --namespace cattle-system \
   --set hostname=rancher.my.org \
   --set replicas=3
 </code></pre></div><p><strong>Wait for Rancher to be rolled out</strong></p>
-<p><code>kubectl -n cattle-system rollout status deploy/rancher</code></p>
-<p><strong>Verify that the Rancher Server is Successfully Deployed</strong></p>
-<p><code>kubectl -n cattle-system get deploy rancher</code></p>
-<p><img src="./rancher.png" alt="rancher"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n cattle-system rollout status deploy/rancher
+</code></pre></div><p><strong>Verify that the Rancher Server is Successfully Deployed</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl -n cattle-system get deploy rancher
+</code></pre></div><p><img src="./rancher.png" alt="rancher"></p>
 <h4 id="install-helm">Install HELM</h4>
 <p>We use HELM for automatic deployment in kubernetes.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
@@ -218,8 +218,8 @@ tac: &#39;7&#39;
 </code></pre></div><h4 id="change-amf-address-in-gnb">Change AMF Address in gNB</h4>
 <p>You must change address to AMF POD address, check with &lsquo;kubectl get pod -o wide -n open5gs | grep amf&rsquo;</p>
 <p><img src="./amf-address.png" alt="amf-address"></p>
-<p><code>sudo nano resources/gnb.yaml</code></p>
-<p><img src="./gnb.png" alt="gnb"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano resources/gnb.yaml
+</code></pre></div><p><img src="./gnb.png" alt="gnb"></p>
 <h4 id="running-ueransim">Running UERANSIM</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm -n open5gs install -f values.yaml ueransim ./
 kubectl get pod -n open5gs | grep ueransim

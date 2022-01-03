@@ -127,8 +127,8 @@
 <h3 id="all-nodes-except-lb-nodes"><strong>All Nodes except LB Nodes</strong></h3>
 <hr>
 <h4 id="set-mapping-hostname">Set mapping hostname</h4>
-<p><code>nano /etc/hosts</code>
-<img src="./hosts.png" alt="k8s-virsh"></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">nano /etc/hosts
+</code></pre></div><p><img src="./hosts.png" alt="k8s-virsh"></p>
 <h4 id="install-packages-containerd">Install packages containerd</h4>
 <p>Load overlay and br_netfilter kernal modules.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cat &lt;&lt;EOF | sudo tee /etc/modules-load.d/containerd.conf 
@@ -169,11 +169,11 @@ sudo apt-mark hold kubelet kubeadm kubectl
 <h3 id="all-lb-nodes"><strong>All LB Nodes</strong></h3>
 <hr>
 <h4 id="install-keepalived--haproxy-packages">Install keepalived &amp; HAproxy packages</h4>
-<p><code>sudo apt install keepalived haproxy psmisc -y</code></p>
-<h4 id="configure-haproxy">Configure HAproxy</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install keepalived haproxy psmisc -y
+</code></pre></div><h4 id="configure-haproxy">Configure HAproxy</h4>
 <p>Add HAproxy configuration bellow in last line</p>
-<p><code>sudo nano /etc/haproxy/haproxy.cfg</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">frontend kubernetes
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/haproxy/haproxy.cfg
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">frontend kubernetes
         bind *:6443 
         option tcplog
         mode tcp
@@ -191,8 +191,8 @@ backend kubernetes-master-nodes
 systemctl status haproxy.service
 systemctl enable haproxy.service
 </code></pre></div><h4 id="configure-keepalived">Configure keepalived</h4>
-<p><code>sudo nano /etc/keepalived/keepalived.conf</code></p>
-<h4 id="haproxy-nodes-1">Haproxy nodes 1</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano /etc/keepalived/keepalived.conf
+</code></pre></div><h4 id="haproxy-nodes-1">Haproxy nodes 1</h4>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">global_defs {
    notification_email {
      root@localhost
@@ -283,8 +283,8 @@ sudo systemctl enable keepalived
 <h3 id="only-master-1-node"><strong>Only Master-1 node</strong></h3>
 <hr>
 <h4 id="initialize-the-cluster">Initialize the Cluster</h4>
-<p><code>sudo nano kubeadm-config.yaml</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">apiVersion: kubeadm.k8s.io/v1beta2
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano kubeadm-config.yaml
+</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">apiVersion: kubeadm.k8s.io/v1beta2
 kind: ClusterConfiguration
 kubernetesVersion: stable
 controlPlaneEndpoint: &#34;fi-k8s-vrrp-master:6443&#34;
@@ -294,10 +294,7 @@ networking:
 </code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
-</code></pre></div><h4 id="install-calico-networking-cni">Install Calico Networking (CNI)</h4>
-<p>kubectl apply -f <a href="https://docs.projectcalico.org/manifests/calico.yaml">https://docs.projectcalico.org/manifests/calico.yaml</a>
-kubectl get pods -n kube-system</p>
-<h3 id="install-calico-networking">Install calico networking</h3>
+</code></pre></div><h3 id="install-calico-networking-cni">Install Calico Networking (CNI)</h3>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
 kubectl get pods -n kube-system
 </code></pre></div><p> </p>
