@@ -26,9 +26,8 @@ cd ~/istio-1.</description>
       
       <guid>/docs/deploy-portworx-storage-in-kubernetes/</guid>
       <description>Specification : Kubernetes, PortWorx, Storage
- Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
-kubectl label namespace open5gs istio-injection=enabled Install Addons packages
-cd ~/istio-1.12.1/samples/addons kubectl apply -f prometheus.</description>
+ PortWorx storage cluster Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp;amp; Bandwidth.
+ Lab Topology    IP Address Nodes     10.</description>
     </item>
     
     <item>

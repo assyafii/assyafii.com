@@ -119,137 +119,104 @@
 <blockquote>
 <p>Specification : Kubernetes, PortWorx, Storage</p>
 </blockquote>
+<h3 id="portworx-storage-cluster"><strong>PortWorx storage cluster</strong></h3>
+<p>Portworx by Pure Storage is a cloud native storage solution, provides a fully integrated solution for persistent storage, data protection, disaster recovery, data security, cross-cloud and data migrations, and automated capacity management for applications running on Kubernetes. If you see in each of documents, portworx have big IOPS &amp; Bandwidth.</p>
+<p> </p>
 <h3 id="lab-topology"><strong>Lab Topology</strong></h3>
-<p><img src="./5Glab.png" alt="5g-topology"></p>
-<h4 id="create-namespaces-for-practices">Create Namespaces for practices</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl create ns open5gs
-</code></pre></div><h4 id="install-service-mesh-istio-optional">Install Service mesh Istio (optional)</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">curl -L https://istio.io/downloadIstio | sh -
-cd istio-1.12.1
-export PATH=$PWD/bin:$PATH
-istioctl install --set profile=demo -y
-</code></pre></div><p>Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl label namespace open5gs istio-injection=enabled
-</code></pre></div><p><strong>Install Addons packages</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/istio-1.12.1/samples/addons
-kubectl apply -f prometheus.yaml #for data sources monitoring
-kubectl apply -f kiali.yaml #for dashboard visualization istio
-kubectl apply -f jaeger.yaml #for tracing log
-kubectl apply -f grafana.yaml #for dashboard monitoring (visualization)
-</code></pre></div><h4 id="install-rancher-optional">Install Rancher (optional)</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm repo add rancher-latest https://releases.rancher.com/server-charts/latest
-kubectl create namespace cattle-system
-</code></pre></div><p><strong>Install crds Cert Manager</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.5.1/cert-manager.crds.yaml
-</code></pre></div><p><strong>Add the Jetstack Helm repository</strong></p>
-<p><code>helm repo add jetstack https://charts.jetstack.io</code></p>
-<p><strong>Update your local Helm chart repository cache</strong></p>
-<p><code>helm repo update</code></p>
-<p><strong>Install the cert-manager Helm chart</strong></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm install cert-manager jetstack/cert-manager \
-  --namespace cert-manager \
-  --create-namespace \
-  --version v1.5.1
-</code></pre></div><hr>
-<p><code>kubectl get pods --namespace cert-manager</code></p>
-<h4 id="install-rancher-with-helm">Install Rancher with Helm</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm install rancher rancher-latest/rancher \
-  --namespace cattle-system \
-  --set hostname=rancher.my.org \
-  --set replicas=3
-</code></pre></div><p><strong>Wait for Rancher to be rolled out</strong></p>
-<p><code>kubectl -n cattle-system rollout status deploy/rancher</code></p>
-<p><strong>Verify that the Rancher Server is Successfully Deployed</strong></p>
-<p><code>kubectl -n cattle-system get deploy rancher</code></p>
-<p><img src="./rancher.png" alt="rancher"></p>
-<h4 id="install-helm">Install HELM</h4>
-<p>We use HELM for automatic deployment in kubernetes.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
-chmod 700 get_helm.sh
-./get_helm.sh
-helm version    
-</code></pre></div><h4 id="clone-repo-for-simulation">Clone repo for simulation</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ~
-git clone https://bitbucket.org/infinitydon/opensource-5g-core-service-mesh.git
-git clone https://github.com/Gradiant/openverso-charts.git
-</code></pre></div><h4 id="configure-amf-services-optional">Configure AMF Services (optional)</h4>
-<p>This services if you want use NodePort &amp; can access from external cluster.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/opensource-5g-core-service-mesh/helm-chart
-sudo nano templates/amf-deploy.yaml
-</code></pre></div><p>Uncomment in AMF service amf-open5gs-sctp
-<img src="./amf-deploy.png" alt="amf-deploy"></p>
-<h4 id="changed-sd-to-ffffff-in-amf-configmap">Changed sd to ffffff in amf-configmap</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">nano templates/amf-configmap.yaml
-</code></pre></div><p><img src="./amf-configmap.png" alt="amf-configmap"></p>
-<h4 id="change-mongodb-configuration">Change mongodb configuration</h4>
-<p>We will use <strong>ROOK Ceph</strong> for persistent volume, need <strong>uncomment existing persistent volume &amp; add storageclassname in persistent volume claim</strong>.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">nano templates/mongodb.yaml
-</code></pre></div><p><img src="./mongodb.png" alt="mongodb"></p>
-<h4 id="deploy-open5gs-with-helm-chart">Deploy open5gs with helm-chart</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ~/opensource-5g-core-service-mesh/helm-chart
-helm -n open5gs install -f values.yaml open ./
-</code></pre></div><h4 id="make-sure-all-pod--services-already-running">Make sure all POD &amp; Services already running</h4>
-<p><img src="./running.png" alt="running"></p>
-<h4 id="register-ue-user-equipment-in-open5gs-dashboard">Register UE (User Equipment in Open5Gs dashboard)</h4>
-<p>Open dashboard use IP webui services <code>10.101.169.188</code></p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Username : admin
-Password : 1423
-</code></pre></div><p><img src="./login.png" alt="login"></p>
-<p>Register User Equipment (UE) with detail bellow :</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">IMSI : 208930000000001
-Key : 465B5CE8B199B49FAA5F0A2EE238A6BC
-OP : E8ED289DEBA952E4283B54E88E6183CA
-opType: OPC
-apn: internet
-sst: 1
-sd: &#34;ffffff&#34;
-</code></pre></div><p><img src="./register.png" alt="register"></p>
-<h3 id="configure-ueransim-ue--gnb"><strong>Configure UERANSIM (UE &amp; gNB)</strong></h3>
-<hr>
-<h4 id="install-ueransim-helm-depedency">Install UERANSIM Helm depedency</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">cd ~
-cd ~/openverso-charts/charts/ueransim
-helm dep update ./
-</code></pre></div><h4 id="change-value-in-ue">Change value in UE</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo nano values.yaml
-</code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mcc: &#39;208&#39;
-mnc: &#39;93&#39;
-tac: &#39;7&#39;
-</code></pre></div><h4 id="change-amf-address-in-gnb">Change AMF Address in gNB</h4>
-<p>You must change address to AMF POD address, check with &lsquo;kubectl get pod -o wide -n open5gs | grep amf&rsquo;</p>
-<p><img src="./amf-address.png" alt="amf-address"></p>
-<p><code>sudo nano resources/gnb.yaml</code></p>
-<p><img src="./gnb.png" alt="gnb"></p>
-<h4 id="running-ueransim">Running UERANSIM</h4>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">helm -n open5gs install -f values.yaml ueransim ./
-kubectl get pod -n open5gs | grep ueransim
-</code></pre></div><h4 id="verify-logs-ue-connected-to-gnb--amf">Verify Logs UE Connected to gNB &amp; AMF</h4>
-<p><strong>AMF Logs</strong>
-<img src="./amf-log.png" alt="amf-log"></p>
-<p><strong>gNB Logs</strong>
-<img src="./gnb-log.png" alt="gnb-log"></p>
-<p><strong>UE Logs</strong>
-<img src="./ue-log.png" alt="ue-log"></p>
-<h4 id="verify-ping-to-internet-via-rancher-dashboard">Verify ping to Internet via Rancher dashboard</h4>
-<p><strong>UE Container</strong></p>
-<p>Note : Bellow not show reply, because in TAP Interface (debian) not showing reply, we can see tcpdump in UPF POD.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ping 8.8.8.8 -I uesimtun0
-</code></pre></div><p><img src="./ping-ue.png" alt="ue-ping"></p>
-<p><strong>UPF POD</strong></p>
-<p>We can see ICMP request reply, from UE IP Address &amp; Google IP.</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">sudo apt install tcpdump
-tcpdump -i ogstun
-</code></pre></div><p><img src="./ping-upf.png" alt="upf-ping"></p>
-<h4 id="grafana-dashboard">Grafana Dashboard</h4>
-<p><img src="./grafana.png" alt="grafana"></p>
-<h4 id="istio-kiali-dashboard">Istio Kiali Dashboard</h4>
-<p><img src="./kiali.png" alt="kiali"></p>
-<p> 
+<p><img src="./portworx.png" alt="portworx-topology">
  </p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">IP Address</th>
+<th style="text-align:center">Nodes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">10.20.10.230</td>
+<td style="text-align:center">sf-k8s-master-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.235</td>
+<td style="text-align:center">sf-k8s-node-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.241</td>
+<td style="text-align:center">sf-k8s-portworx-1</td>
+</tr>
+<tr>
+<td style="text-align:center">10.20.10.242</td>
+<td style="text-align:center">sf-k8s-portworx-2</td>
+</tr>
+</tbody>
+</table>
+<h4 id="first-make-your-k8s-cluster-already-running">First, make your k8s cluster already running</h4>
+<p>If your cluster ready, you can check in previous docummentation for installation <a href="https://assyafii.com/docs/install-kubernetes-cluster-multi-master-ha/">https://assyafii.com/docs/install-kubernetes-cluster-multi-master-ha/</a></p>
+<p><img src="./ready.png" alt="portworx-ready"></p>
+<h4 id="add-labels-pxmetadata-nodetrue-for-portworx-nodes">Add labels px/metadata-node=true for portworx nodes</h4>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl label nodes sf-k8s-portworx-1 sf-k8s-portworx-2 px/metadata-node=true
+</code></pre></div><h4 id="create-portworx-template-generator">Create portworx template generator</h4>
+<p><strong>1. Login to <a href="https://central.portworx.com/specGen/wizard">https://central.portworx.com/specGen/wizard</a> &amp; choose version</strong>
+<img src="./1.png" alt="portworx-1"></p>
+<p><strong>2. Checklist use operator</strong>
+<img src="./2.png" alt="portworx-2"></p>
+<p><strong>3. You need configure KVDB Devices if production, for testing skip this</strong>
+<img src="./3.png" alt="portworx-3"></p>
+<p><strong>4. Skip network configuration</strong>
+<img src="./4.png" alt="portworx-4"></p>
+<p><strong>5. Add cluster name prefix</strong>
+<img src="./5.png" alt="portworx-5"></p>
+<p><strong>6. Apply deployment to cluster from template created</strong>
+<img src="./6.png" alt="portworx-6"></p>
+<h4 id="verification">Verification</h4>
+<p><strong>Checks status POD portworx running</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">kubectl get pods -n kube-system
+</code></pre></div><p><strong>If running all, check cluster portworx</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">PX_POD=$(kubectl get pods -l name=portworx -n kube-system -o jsonpath=&#39;{.items[0].metadata.name}&#39;)
+kubectl exec -it $PX_POD -n kube-system -- /opt/pwx/bin/pxctl status
+</code></pre></div><p><img src="./7.png" alt="portworx-7"></p>
+<h4 id="testing-scenario">Testing scenario</h4>
+<p>For test, wee will deploy POD FIO then benchmark on directory which mount to portworx cluster.</p>
+<p><img src="./8.png" alt="portworx-8"></p>
+<p><strong>Create PVC &amp; POD For testing</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: px-pvc-fio
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: px-replicated
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: px-pod-fio
+spec:
+  containers:
+    - name: fio
+      image: vineethac/fio_image
+      command: [ &#34;/bin/bash&#34;, &#34;-c&#34;, &#34;--&#34; ]
+      args: [ &#34;while true; do sleep 30; done;&#34; ]
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - mountPath: &#34;/mnt/px&#34;
+          name: px-pvc-fio-vol
+  volumes:
+    - name: px-pvc-fio-vol
+      persistentVolumeClaim:
+        claimName: px-pvc-fio
+</code></pre></div><p><img src="./9.png" alt="portworx-9"></p>
+<p><strong>FIO Testing in directory /mnt/px</strong></p>
+<p><img src="./10.png" alt="portworx-10"></p>
 <h4 id="reference-">Reference :</h4>
-<p><a href="https://medium.com/rahasak/5g-core-network-setup-with-open5gs-and-ueransim-cd0e77025fd7">https://medium.com/rahasak/5g-core-network-setup-with-open5gs-and-ueransim-cd0e77025fd7</a></p>
-<p><a href="https://levelup.gitconnected.com/opensource-5g-core-with-service-mesh-bba4ded044fa">https://levelup.gitconnected.com/opensource-5g-core-with-service-mesh-bba4ded044fa</a></p>
-<p><a href="https://github.com/Gradiant/openverso-charts.git">https://github.com/Gradiant/openverso-charts.git</a></p>
+<p><a href="https://thenewstack.io/tutorial-install-and-configure-portworx-on-a-bare-metal-kubernetes-cluster/">https://thenewstack.io/tutorial-install-and-configure-portworx-on-a-bare-metal-kubernetes-cluster/</a></p>
+<p><a href="https://docs.portworx.com/portworx-install-with-kubernetes/on-premise/airgapped/">https://docs.portworx.com/portworx-install-with-kubernetes/on-premise/airgapped/</a></p>
 
 </div>
 </div>
