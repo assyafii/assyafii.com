@@ -8,6 +8,17 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 28 Nov 2018 15:14:39 +1000</lastBuildDate><atom:link href="/docs/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS</title>
+      <link>/docs/deploy-crud-using-aws-api-gateway-serverless-lambda-and-rds-&#43;-openstack/</link>
+      <pubDate>Wed, 15 Jun 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/deploy-crud-using-aws-api-gateway-serverless-lambda-and-rds-&#43;-openstack/</guid>
+      <description>Specification : AWS, API Gateway, Serverless, Lambda, RDS, Postman
+ Lab Topology  Step-by-step  Create IAM role for allow configuration Create Database table with DynamoDB Create AWS API Gateway service Create Lambda function Testing CRUD with postman Verify  A. Create IAM role First step is create IAM role to allow Lambda function to call AWS services, for it you can follow guide bellow :
+ Login to your AWS console, search and chose IAM menu  Choose Roles and create role  Choose AWS Services -&amp;gt; Lambda and Next   And you can see menu bellow   For integrate lambda with RDS &amp;amp; cloudwatch, wee need filter &amp;amp; checklist cloudwatchfullaccess   And the last one, search dynamodb and checklist full access permissions   Add rolename   Verify you already added two roles for it, and create role     B.</description>
+    </item>
+    
+    <item>
       <title>Deploy PortWorx storage in kubernetes</title>
       <link>/docs/deploy-portworx-storage-in-kubernetes/</link>
       <pubDate>Sun, 03 Jan 2021 00:00:00 +0000</pubDate>
@@ -28,6 +39,16 @@
  Lab Topology Create Namespaces for practices kubectl create ns open5gs Install Service mesh Istio (optional) curl -L https://istio.io/downloadIstio | sh - cd istio-1.12.1 export PATH=$PWD/bin:$PATH istioctl install --set profile=demo -y Add a namespace label to instruct Istio to automatically inject Envoy sidecar proxies when you deploy your application later:
 kubectl label namespace open5gs istio-injection=enabled Install Addons packages
 cd ~/istio-1.</description>
+    </item>
+    
+    <item>
+      <title>Deploy Magmacore 5G on AWS</title>
+      <link>/docs/deploy-magmacore-5g-on-aws/</link>
+      <pubDate>Sat, 02 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/docs/deploy-magmacore-5g-on-aws/</guid>
+      <description>Specification : Amazon Web Services, Magmacore, 5G, Cloud
+ Deploy Cloudstrapper  Access AWS Marketplace and search for “Magma Cloudstrapper”   On the Product Overview page, click Continue to Subscribe.   On the Subscribe to this software page, confirm Accept Terms and click Continue to Configuration.   On the Configure this software page, choose Delivery Method, Software Version, and Region. The only default we recommend you change is the Region.</description>
     </item>
     
     <item>

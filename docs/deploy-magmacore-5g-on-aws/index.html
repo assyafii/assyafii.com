@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>Summary docs - M. Luthfi As Syafii</title>
+  <title>Deploy Magmacore 5G on AWS - M. Luthfi As Syafii</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <link rel="icon" href="/favicon.png">
@@ -18,7 +18,7 @@
 
 </head>
 
-<body class='page page-default-list'>
+<body class='page page-default-single'>
   <div id="main-menu-mobile" class="main-menu-mobile">
   <ul>
     
@@ -102,7 +102,7 @@
       <a href="/docs/5g-cloud-native-simulation-with-open5gs/">5G Cloud Native Simulation with Open5Gs</a>
     </li>
     
-    <li class="">
+    <li class="active ">
       <a href="/docs/deploy-magmacore-5g-on-aws/">Deploy Magmacore 5G on AWS</a>
     </li>
     
@@ -121,53 +121,74 @@
         </div>
         <div class="col-12 col-md-9">
           
-
-<span class="overview">Overview</span>
-<h1 class="title">Summary docs</h1>
-<div class="content">
+<h1 class="title">Deploy Magmacore 5G on AWS</h1>
+<div class="content ">
   <hr>
-<p>Feel free to learn &amp; share, if you have article or more you can contact me at <a href="mailto:contact@assyafii.com">contact@assyafii.com</a></p>
+<blockquote>
+<p>Specification : Amazon Web Services, Magmacore, 5G, Cloud</p>
+</blockquote>
+<h2 id="deploy-cloudstrapper"><strong>Deploy Cloudstrapper</strong></h2>
+<ol>
+<li>Access AWS Marketplace and search for “Magma Cloudstrapper”</li>
+</ol>
+<p><img src="./images/1.png" alt="aws1"></p>
+<ol start="2">
+<li>
+<p>On the Product Overview page, click Continue to Subscribe.
+<img src="./images/2.png" alt="aws2"></p>
+</li>
+<li>
+<p>On the Subscribe to this software page, confirm Accept Terms and click Continue to Configuration.
+<img src="./images/3.png" alt="aws3"></p>
+</li>
+<li>
+<p>On the Configure this software page, choose Delivery Method, Software Version, and Region. The only default we recommend you change is the Region. Choose Continue to Launch.
+<img src="./images/4.png" alt="aws4"></p>
+</li>
+<li>
+<p>On the Launch this software page, In Choose Action, select :</p>
+</li>
+</ol>
+<ul>
+<li>Launch from Website (default).</li>
+<li>For EC2 Instance Type, select medium (default).</li>
+<li>For VPC Settings, select the target VPC.</li>
+<li>For Subnet Settings, select the VPC Private Subnet</li>
+<li>For Key Pair Settings, select your preferred key pair.</li>
+<li>Click Launch</li>
+</ul>
+<p><img src="./images/6.png" alt="aws6">
+<img src="./images/7.png" alt="aws7"></p>
+<ol start="6">
+<li>See bellow, cloudstrapper already deployed &amp; you can see on the instances dashboard.</li>
+</ol>
+<p><img src="./images/8.png" alt="aws8">
+<img src="./images/9.png" alt="aws9"></p>
+<h2 id="deploy-orchestrator-in-aws-region"><strong>Deploy Orchestrator in AWS Region</strong></h2>
+<h4 id="1-configure-orchestrator-deployment-parameters">1. Configure Orchestrator Deployment Parameters</h4>
+<ol>
+<li>
+<p>Log into Cloudstrapper EC2 instance
+<img src="./images/10.png" alt="aws10"></p>
+</li>
+<li>
+<p>Create a Magma work directory and clone the Magma master branch onto it.</p>
+</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mkdir ~/magma-dev
+cd ~/magma-dev
+git clone https://github.com/magma/magma.git
+cd ~/magma-dev/magma/experimental/cloudstrapper/playbooks
+cp roles/vars/secrets.yaml ~/magma-dev/
+nano ~/magma-dev/secrets.yaml
+</code></pre></div><p><img src="./images/11.png" alt="aws11"></p>
+<ol start="3">
+<li>Update orc8r cluster.yaml with AWS access credentials</li>
+</ol>
+<h4 id="note--todo-soon-currently-not-finished">Note : Todo soon, Currently not finished</h4>
 
 </div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/deploy-crud-using-aws-api-gateway-serverless-lambda-and-rds-&#43;-openstack/">Deploy CRUD using AWS API Gateway, Serverless Lambda and RDS</a></h2>
 </div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/deploy-portworx-storage-in-kubernetes/">Deploy PortWorx storage in kubernetes</a></h2>
-</div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/5g-cloud-native-simulation-with-open5gs/">5G Cloud Native Simulation with Open5Gs</a></h2>
-</div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/deploy-magmacore-5g-on-aws/">Deploy Magmacore 5G on AWS</a></h2>
-</div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/deploy-storage-cluster-rook-with-ceph-in-kubernetes/">Deploy storage cluster ROOK with CEPH in Kubernetes</a></h2>
-</div>
-
-
-<div class="summary mb-2">
-  
-  <h2 class="title-summary"><a href="/docs/install-kubernetes-cluster-multi-master-ha/">Install Kubernetes cluster multi Master High Availability</a></h2>
-</div>
-
-
-
 
         </div>
       </div>
